@@ -1,5 +1,5 @@
 # 빌드 스테이지
-FROM python:3.9-slim-buster AS builder
+FROM python:3.11-slim-buster AS builder
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --upgrade pip
 
 # 실행 스테이지
-FROM python:3.9-slim-buster
+FROM python:3.11-slim-buster
 
 WORKDIR /app
 
