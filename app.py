@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import shutil
 from werkzeug.utils import secure_filename
+import dlib
 
 UPLOAD_FOLDER = 'static/uploads'
 TEMP_FOLDER = 'static/temp'
@@ -217,4 +218,5 @@ def delete_frames():
         return jsonify({"status": "error", "message": "삭제할 파일을 찾을 수 없습니다"}), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
