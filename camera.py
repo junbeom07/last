@@ -9,7 +9,7 @@ class VideoCamera(object):
         self.sticker_path = 'static/kkkk.png'
         self.img_hat = cv2.imread(self.sticker_path, cv2.IMREAD_UNCHANGED)
         self.detector_hog = dlib.get_frontal_face_detector()
-        self.model_path = 'shape_predictor_68_face_landmarks.dat'
+        self.model_path = 'static/models/shape_predictor_68_face_landmarks.dat'
         self.landmark_predictor = dlib.shape_predictor(self.model_path)
         self.scaling_factor_width = 1.0
         self.scaling_factor_height = 1.0

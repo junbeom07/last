@@ -65,6 +65,7 @@ COPY static ./static
 COPY templates ./templates
 
 RUN mkdir -p static/temp && chmod 777 static/temp
+RUN mkdir -p static/captures && chmod 777 static/captures
 
 EXPOSE 8080
 
@@ -73,3 +74,6 @@ RUN useradd -m appuser
 USER appuser
 
 CMD ["python", "app.py"]
+
+# 모델 파일 복사
+COPY static/models/shape_predictor_68_face_landmarks.dat static/models/
