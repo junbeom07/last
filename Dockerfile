@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y \
 # 애플리케이션 파일 복사
 COPY app.py .
 COPY camera.py .
-COPY static ./static  # static 폴더 전체 복사
+COPY static ./static
 COPY templates ./templates
 
 EXPOSE 8080
