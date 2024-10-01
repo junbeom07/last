@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>웹캠 스티커 앱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="container">
+                <h1><span class="material-icons">camera_alt</span>웹캠 스티커 앱</h1>
+                <div class="header-buttons">
+                    <button id="stickerControlBtn" class="btn header-btn btn-secondary">
+                        <span class="material-icons">emoji_emotions</span>스티커 조절
+                    </button>
+                    <button id="uploadStickerBtn" class="btn header-btn btn-secondary">
+                        <span class="material-icons">file_upload</span>스티커 업로드
+                    </button>
+                    <button onclick="captureFrame()" class="btn header-btn btn-primary">
+                        <span class="material-icons">photo_camera</span>캡처하기
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <div class="main-content">
+                <section class="video-section">
+                    <div class="video-wrapper">
+                        <img src="{{ url_for('video_feed') }}" alt="웹캠 영상" class="video-feed">
+                    </div>
+                </section>  
+
+
+            </div>
+
+            <section class="action-section">
+                <div class="card captured-frames-section">
+                    <h2>갤러리</h2>
+                    <section class="gallery-section">
+                            <div id="captureResult" class="gallery-container"></div>
+                            <div class="pagination">
+                                <button id="prevPage" class="btn btn-secondary">&lt; 이전</button>
+                                <span id="pageInfo"></span>
+                                <button id="nextPage" class="btn btn-secondary">다음 &gt;</button>
+                            </div>
+                            <div class="button-container">
+                                <button onclick="downloadSelectedFrames()" class="btn btn-action" id="downloadBtn" style="display: none;">
+                                    <span class="material-icons">download</span>이미지 다운로드
+                                </button>
+                                <button onclick="deleteSelectedFrames()" class="btn btn-action" id="deleteBtn" style="display: none;">
+                                    <span class="material-icons">delete</span>이미지 삭제
+                                </button>
+                            </div>
+                    </section>
+                </div>
+                <section class="side-section">
+                    <div class="card upload-section" style="display: none;">
+                        <h2>스티커 업로드</h2>
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div class="file-input-container">
+                                <div class="file-input-wrapper">
+                                    <input type="file" id="stickerFile" name="file" accept=".png" class="file-input">
+                                    <label for="stickerFile" class="file-input-label">
+                                        <span class="material-icons">add_photo_alternate</span>
+                                        파일 선택
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><span class="material-icons">cloud_upload</span>업로드</button>
+                            </div>
+                            <span class="file-name">선택된 파일 없음</span>
+                        </form>
+                        <div id="uploadResult"></div>
+                    </div>
+
+                    <div class="card sticker-section">
+                        <h2>사용 가능한 스티커</h2>
+                        <div id="stickerList">
+                            <!-- 스티커 리스트가 여기에 표시됨 -->
+                        </div>
+                    </div>
+                </section>
+                
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- 기존 코드 아래에 추가 -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="확대된 이미지">
+            <div class="modal-controls">
+                <button id="modalDeleteBtn" class="btn btn-danger">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달 추가 -->
+    <div id="stickerControlModal" class="modal sticker-modal">
+        <div class="modal-content">
+            <h2>스티커 조절<span class="close">&times;</span></h2>
+            <div class="control-group">
+                <button onclick="adjustSticker('width_increase')" class="btn btn-control">가로+</button>
+                <button onclick="adjustSticker('width_decrease')" class="btn btn-control">가로-</button>
+                <button onclick="adjustSticker('height_increase')" class="btn btn-control">세로+</button>
+                <button onclick="adjustSticker('height_decrease')" class="btn btn-control">세로-</button>
+            </div>
+            <div class="control-group">
+                <button onclick="adjustSticker('move_left')" class="btn btn-move"><span class="material-icons">arrow_back</span></button>
+                <button onclick="adjustSticker('move_right')" class="btn btn-move"><span class="material-icons">arrow_forward</span></button>
+                <button onclick="adjustSticker('move_up')" class="btn btn-move"><span class="material-icons">arrow_upward</span></button>
+                <button onclick="adjustSticker('move_down')" class="btn btn-move"><span class="material-icons">arrow_downward</span></button>
+            </div>
+            <button onclick="adjustSticker('reset')" class="btn btn-reset"><span class="material-icons">refresh</span>초기화</button>
+        </div>
+    </div>
+
+    <!-- 헤더 부분에 스티커 업로드 버튼 추가 (이미 있다면 그대로 유지) -->
+    <div id="uploadStickerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="card upload-section">
+                <h2>스티커 업로드</h2>
+                <form id="uploadStickerForm" enctype="multipart/form-data">
+                    <div class="file-input-container">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="stickerFileInput" name="file" accept=".png" class="file-input">
+                            <label for="stickerFileInput" class="file-input-label">
+                                <span class="material-icons">add_photo_alternate</span>
+                                파일 선택
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><span class="material-icons">cloud_upload</span>업로드</button>
+                    </div>
+                    <span class="file-name" id="stickerFileName">선택된 파일 없음</span>
+                </form>
+                <div id="uploadStickerResult"></div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+</body>
+</html>
