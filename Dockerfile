@@ -64,6 +64,8 @@ COPY camera.py .
 COPY static ./static
 COPY templates ./templates
 
+RUN mkdir -p static/temp && chmod 777 static/temp
+
 EXPOSE 8080
 
 # 비루트 사용자 생성 및 전환
