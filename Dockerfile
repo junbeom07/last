@@ -30,7 +30,7 @@ FROM python:3.11-slim-buster
 WORKDIR /app
 
 # 빌드 스테이지에서 설치된 라이브러리 복사
-COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 # 필요한 시스템 라이브러리만 설치
