@@ -1,7 +1,7 @@
 # 빌드 스테이지
 FROM python:3.11-slim-buster AS builder
 
-WORKDIR /LAST
+WORKDIR /app
 
 # 시스템 의존성 설치 및 캐시 정리
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,10 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     liblapack-dev \
     libx11-dev \
     libgtk-3-dev \
-    libgl1 \  
+    libgl1 \
     libsm6 \
     libxext6 \
     libxrender-dev \
+    libpng-dev \ 
     && rm -rf /var/lib/apt/lists/*
 
 # Python 의존성 설치
@@ -27,7 +28,7 @@ RUN pip install --upgrade pip
 # 실행 스테이지
 FROM python:3.11-slim-buster
 
-WORKDIR /LAST
+WORKDIR /app
 
 # 빌드 스테이지에서 설치된 라이브러리 복사
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
@@ -40,7 +41,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsm6 \
     libxext6 \
     libxrender-dev \
-    libgl1 \  
+    libgl1 \
+    libpng-dev \
+    cmake \
+    libboost-all-dev \
+    libjpeg-dev \
+    liblapack-dev \
+    libx11-dev \
+    libgtk-3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 시스템 패키지 설치
