@@ -1,7 +1,7 @@
 # 빌드 스테이지
 FROM python:3.11-slim-buster AS builder
 
-WORKDIR /app
+WORKDIR /LAST
 
 # 시스템 의존성 설치 및 캐시 정리
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     liblapack-dev \
     libx11-dev \
     libgtk-3-dev \
-    libgl1-mesa-glx \
+    libgl1 \  
     libsm6 \
     libxext6 \
     libxrender-dev \
@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsm6 \
     libxext6 \
     libxrender-dev \
+    libgl1 \  
     && rm -rf /var/lib/apt/lists/*
 
 # 시스템 패키지 설치
