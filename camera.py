@@ -26,7 +26,7 @@ class VideoCamera(object):
     def get_frame(self):
         success, frame = self.video.read()
         if not success:
-            return None
+            return b''  # 빈 바이트를 반환하여 오류를 방지
 
         img_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img_show = frame.copy()
