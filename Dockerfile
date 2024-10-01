@@ -27,7 +27,7 @@ RUN pip install --upgrade pip
 # 실행 스테이지
 FROM python:3.11-slim-buster
 
-WORKDIR /app
+WORKDIR /LAST
 
 # 빌드 스테이지에서 설치된 라이브러리 복사
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
