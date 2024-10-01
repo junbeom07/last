@@ -7,7 +7,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     cmake \
-    libopenblas-dev \
+    libopenblas-dev \  # OpenBLAS 추가
     liblapack-dev \
     libx11-dev \
     libgtk-3-dev \
@@ -35,7 +35,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 # 필요한 시스템 라이브러리만 설치
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1-mesa-glx \
+    libopenblas-dev \  
     libglib2.0-0 \
     libsm6 \
     libxext6 \
