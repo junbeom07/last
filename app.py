@@ -5,6 +5,7 @@ import os
 import shutil
 from werkzeug.utils import secure_filename
 import dlib
+from flask_cors import CORS
 
 UPLOAD_FOLDER = 'static/uploads'
 TEMP_FOLDER = 'static/temp'
