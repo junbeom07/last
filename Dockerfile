@@ -73,7 +73,11 @@ EXPOSE 8080
 RUN useradd -m appuser
 USER appuser
 
-CMD ["python", "app.py"]
+# 환경 변수 설정
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
 
 # 모델 파일 복사
 COPY static/models/shape_predictor_68_face_landmarks.dat static/models/
